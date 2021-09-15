@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 
 import { UserData } from "../../App";
 import api, { DynamodbroPostQuery, DynamodbroPostResponse } from "../../API/api";
-import DisplayData from "./DisplayData";
 import Chart from "../Chart";
 
 type Props = {
@@ -97,13 +96,6 @@ const Main = (props: Props) => {
       <button onClick={handleSubmit}>
         API
       </button>
-      {respose &&
-        respose.map((r, idx)=>
-          <div key={idx}>
-            <DisplayData payload={r.payload} />
-          </div>
-        )
-      }
       <Chart response={respose}/>
     </>
   );
