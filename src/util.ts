@@ -1,3 +1,13 @@
+import { UseFormRegisterReturn } from 'react-hook-form';
+
+export const registerMui = (res: UseFormRegisterReturn) => {
+  return {
+    inputRef: res.ref,
+    onChange: res.onChange,
+    onBlur: res.onBlur,
+    name: res.name,
+  };
+}
 
 const util = {
 

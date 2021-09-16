@@ -6,6 +6,7 @@ import { UserData } from '../App';
 export type DynamodbroPostQuery = {
   t_start: string,
   t_end: string,
+  device: string,
 };
 
 type Response = {
@@ -17,8 +18,8 @@ type Response = {
 export type DynamodbroPostResponse = Array<Response> | undefined;
 
 const api = {
-  dynamodbroPost: async ( userData: UserData, query: DynamodbroPostQuery, device: string ) => {
-    if(device === "") return;
+  dynamodbroPost: async ( userData: UserData, query: DynamodbroPostQuery ) => {
+    if(query.device === "") return;
     const API_URL = Config.apiUrl;
     const idToken = userData.signInUserSession.idToken.jwtToken;
     const headers = { headers: {
@@ -27,7 +28,7 @@ const api = {
     const Object = {
       OperationType: "TDURING",
       Keys: {
-        device_id: device,
+        device_id: query.device,
         t_start: query.t_start,
         t_end: query.t_end,
       }
