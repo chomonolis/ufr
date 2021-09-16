@@ -60,9 +60,25 @@ const makeData = (itemMap: Map<string, Data[]>, type: string) => {
     if(l.timestamp < r.timestamp) return -1;
     return 0;
   })
-  let labels = Array<string>();
-  let data = Array<number>();
+  const addArray = Array<Data>();
+  const dt = 1000*60*10;
+  const bias = 1000*60*3;
+  let beforeTime = 0;
   for(const d of sortedArray) {
+    while((beforeTime === 0 || d.timestamp < beforeTime + dt + bias) === false) {
+      const newData: Data = {
+        timestamp: beforeTime+dt,
+        d: NaN,
+      };
+      addArray.push(newData);
+      beforeTime = beforeTime + dt;
+    }
+    addArray.push(d);
+    beforeTime = d.timestamp;
+  }
+  const labels = Array<string>();
+  const data = Array<number>();
+  for(const d of addArray) {
     const dd = new Date(d.timestamp);
     const str = (dd.getMonth()+1) + "/" + dd.getDate() + " " + dd.getHours() + ":" + dd.getMinutes();
     labels.push(str);
