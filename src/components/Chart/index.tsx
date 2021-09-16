@@ -1,5 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import {Line} from 'react-chartjs-2'
+import React, { useState, useEffect } from 'react';
+import {Line} from 'react-chartjs-2';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
 
 import { DynamodbroPostResponse } from "../../API/api";
 import util from "../../util";
@@ -37,6 +43,19 @@ type GraphData = {
 //   ]
 // }
 
+const useStyles = makeStyles((theme: Theme) =>
+createStyles({
+  button: {
+    display: 'block',
+    marginTop: theme.spacing(2),
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+}),
+);
+
 const makeData = (itemMap: Map<string, Data[]>, type: string) => {
   const array = itemMap.get(type);
   if(!array) return undefined;
@@ -48,7 +67,9 @@ const makeData = (itemMap: Map<string, Data[]>, type: string) => {
   let labels = Array<string>();
   let data = Array<number>();
   for(const d of sortedArray) {
-    labels.push(d.timestamp + "");
+    const dd = new Date(d.timestamp);
+    const str = (dd.getMonth()+1) + "/" + dd.getDate() + " " + dd.getHours() + ":" + dd.getMinutes();
+    labels.push(str);
     data.push(d.d);
   }
   const res: GraphData = {
@@ -70,6 +91,7 @@ const Chart = ( props: Props ) => {
   const [itemMap, setItemMap] = useState<Map<string, Data[]>>();
   const [type, setType] = useState<string>("");
   const [graphData, setGraphData] = useState<GraphData>();
+  const classes = useStyles();
 
   useEffect(()=>{
     if(response === undefined) return ;
@@ -104,30 +126,28 @@ const Chart = ( props: Props ) => {
     }
   }, [itemMap, type]);
 
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setType(event.target.value as string);
+  };
+
   return (
     <>
-      <h2>{type}</h2>
-      <Line data={graphData} />
-      {/* {itemTypes.map((type) => { return (
-        <>
-          <h3>{type}</h3>
-          {itemMap?.get(type) && itemMap.get(type)?.map((data) => {
-            return (
-              <>
-                <p>
-                  {data.timestamp}
-                </p>
-                <p>
-                  {data.d}
-                </p>
-              </>
-            );
-          })
-
+      <FormControl className={classes.formControl}>
+        <InputLabel>Type</InputLabel>
+        <Select
+          labelId="demo-controlled-open-select-label"
+          id="demo-controlled-open-select"
+          value={type}
+          onChange={handleChange}
+        >
+          {itemTypes &&
+            itemTypes.map((t, idx) => { return(
+              <MenuItem value={t} key={idx}>{t}</MenuItem>
+            );})
           }
-        </>
-      );})
-      } */}
+        </Select>
+      </FormControl>
+      <Line data={graphData} />
     </>
   )
 }
