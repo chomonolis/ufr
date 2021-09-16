@@ -28,10 +28,23 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+const makeInitialTime = () => {
+  const s = new Date();
+  s.setHours(0);
+  s.setMinutes(0);
+  s.setSeconds(0);
+  s.setHours(s.getHours() + 9);
+  const t = new Date(s);
+  t.setDate(s.getDate() + 1);
+  const initialFromTime = s.toISOString().substr(0, 16);
+  const initialToTime = t.toISOString().substr(0, 16);
+  return {initialFromTime, initialToTime};
+}
+
 const Main = (props: Props) => {
   const { userData } = props;
-  const initialFromTime = "2021-09-08T11:00";
-  const initialToTime = "2021-09-08T12:00";
+  const {initialFromTime, initialToTime} = makeInitialTime();
+  console.log(initialFromTime, initialToTime);
   const [respose, setResponse] = useState<DynamodbroPostResponse>();
   const [fromTime, setFromTime] = useState<string>(initialFromTime);
   const [toTime, setToTime] = useState<string>(initialToTime);
