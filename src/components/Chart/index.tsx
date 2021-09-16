@@ -45,10 +45,6 @@ type GraphData = {
 
 const useStyles = makeStyles((theme: Theme) =>
 createStyles({
-  button: {
-    display: 'block',
-    marginTop: theme.spacing(2),
-  },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
@@ -135,8 +131,6 @@ const Chart = ( props: Props ) => {
       <FormControl className={classes.formControl}>
         <InputLabel>Type</InputLabel>
         <Select
-          labelId="demo-controlled-open-select-label"
-          id="demo-controlled-open-select"
           value={type}
           onChange={handleChange}
         >

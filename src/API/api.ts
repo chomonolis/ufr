@@ -17,7 +17,8 @@ type Response = {
 export type DynamodbroPostResponse = Array<Response> | undefined;
 
 const api = {
-  dynamodbroPost: async ( userData: UserData, query: DynamodbroPostQuery ) => {
+  dynamodbroPost: async ( userData: UserData, query: DynamodbroPostQuery, device: string ) => {
+    if(device === "") return;
     const API_URL = Config.apiUrl;
     const idToken = userData.signInUserSession.idToken.jwtToken;
     const headers = { headers: {
@@ -26,7 +27,7 @@ const api = {
     const Object = {
       OperationType: "TDURING",
       Keys: {
-        device_id: "UF_raspberry",
+        device_id: device,
         t_start: query.t_start,
         t_end: query.t_end,
       }

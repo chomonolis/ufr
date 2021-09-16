@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
@@ -21,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(1),
       width: 200,
     },
+    formControl: {
+      minWidth: 120,
+    },
   }),
 );
 
@@ -31,6 +35,8 @@ const Main = (props: Props) => {
   const [respose, setResponse] = useState<DynamodbroPostResponse>();
   const [fromTime, setFromTime] = useState<string>(initialFromTime);
   const [toTime, setToTime] = useState<string>(initialToTime);
+  const [device, setDevice] = useState<string>("");
+  const devices: string[] = ["UF_raspberry", "UF_raspberry2"];
   const classes = useStyles();
 
   const handleChangeFrom = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,8 +71,12 @@ const Main = (props: Props) => {
       t_start: from,
       t_end: to,
     };
-    const r = await api.dynamodbroPost( userData, query );
+    const r = await api.dynamodbroPost( userData, query, device );
     setResponse(r);
+  };
+
+  const handleDeviceChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setDevice(event.target.value as string);
   };
   
   return (
@@ -92,11 +102,22 @@ const Main = (props: Props) => {
             shrink: true,
           }}
         />
+        <FormControl className={classes.formControl}>
+          <InputLabel>Devices</InputLabel>
+          <Select
+            value={device}
+            onChange={handleDeviceChange}
+          >
+          {devices.map((t, idx) => { return(
+            <MenuItem value={t} key={idx}>{t}</MenuItem>
+          );})}
+          </Select>
+        </FormControl>
       </form>
       <button onClick={handleSubmit}>
         API
       </button>
-      <Chart response={respose}/>
+      <Chart response={respose} />
     </>
   );
 }
