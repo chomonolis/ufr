@@ -44,7 +44,6 @@ const makeInitialTime = () => {
 const Main = (props: Props) => {
   const { userData } = props;
   const {initialFromTime, initialToTime} = makeInitialTime();
-  console.log(initialFromTime, initialToTime);
   const [respose, setResponse] = useState<DynamodbroPostResponse>();
   const [fromTime, setFromTime] = useState<string>(initialFromTime);
   const [toTime, setToTime] = useState<string>(initialToTime);
