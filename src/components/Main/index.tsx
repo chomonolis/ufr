@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CircularProgress, Container } from '@material-ui/core';
 
 import { UserData } from "../../App";
 import api, { DynamodbroPostQuery, DynamodbroPostResponse } from "../../API/api";
@@ -12,6 +13,8 @@ type Props = {
 const Main = (props: Props) => {
   const { userData } = props;
   const [respose, setResponse] = useState<DynamodbroPostResponse>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(false);
   const devices: string[] = ["UF_raspberry", "UF_raspberry2"];
 
   const validateDate = (s: string) => {
@@ -38,14 +41,27 @@ const Main = (props: Props) => {
       t_end: to,
       device: data.device,
     };
+    setLoading(true);
     const r = await api.dynamodbroPost(userData, query);
+    setLoaded(true);
+    setLoading(false);
     setResponse(r);
   };
   
   return (
     <>
-      <Form onSubmit={onSubmit} devices={devices} />
-      <Chart response={respose} />
+      <Container>
+        <Form onSubmit={onSubmit} devices={devices} />
+        {loading ?
+          <CircularProgress />
+        :
+          <>
+            {loaded &&
+              <Chart response={respose} />
+            }
+          </>
+        }
+      </Container>
     </>
   );
 }
