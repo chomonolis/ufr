@@ -30,19 +30,6 @@ type GraphData = {
   }],
 }
 
-// const data:GraphData ={
-//   labels: ["Mon","Tue","Wed","Thu","Fir","Sat","Sun"],
-//   datasets: [
-//     {
-//       label: "Demo line plot",
-//       backgroundColor: "#008080",
-//       borderColor: "#7fffd4",
-//       pointBorderWidth: 10,
-//       data: [5,6,9,15,30,40,80],
-//     }
-//   ]
-// }
-
 const useStyles = makeStyles((theme: Theme) =>
 createStyles({
   formControl: {
@@ -51,6 +38,12 @@ createStyles({
   },
 }),
 );
+
+const zeroPading = (n: number) => {
+  const res = String(n);
+  if(n >= 10) return res;
+  return '0' + res;
+}
 
 const makeData = (itemMap: Map<string, Data[]>, type: string) => {
   const array = itemMap.get(type);
@@ -80,7 +73,7 @@ const makeData = (itemMap: Map<string, Data[]>, type: string) => {
   const data = Array<number>();
   for(const d of addArray) {
     const dd = new Date(d.timestamp);
-    const str = (dd.getMonth()+1) + "/" + dd.getDate() + " " + dd.getHours() + ":" + dd.getMinutes();
+    const str = zeroPading(dd.getMonth()+1) + "/" + zeroPading(dd.getDate()) + " " + zeroPading(dd.getHours()) + ":" + zeroPading(dd.getMinutes());
     labels.push(str);
     data.push(d.d);
   }
@@ -90,7 +83,7 @@ const makeData = (itemMap: Map<string, Data[]>, type: string) => {
       label: type,
       backgroundColor: "#008080",
       borderColor: "#7fffd4",
-      pointBorderWidth: 10,
+      pointBorderWidth: 5,
       data: data,
     }]
   };

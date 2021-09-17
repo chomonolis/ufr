@@ -23,15 +23,18 @@ const Main = (props: Props) => {
 
   useEffect(() => {
     (async () => {
-      const result = await API.graphql(graphqlOperation(listUserData, {filter: {email: {eq: userData?.attributes.email}}}));
-      if("data" in result) {
-        const data = result.data as ListUserDataQuery;
-        const items = data.listUserData?.items
-        if(items) {
-          const itemDevices = items[0]?.devices;
-          if(itemDevices) {
-            const adarr: string[] = itemDevices.filter(notEmpty);
-            setDevices(adarr);
+      console.log(userData);
+      if(userData.attributes?.email) {
+        const result = await API.graphql(graphqlOperation(listUserData, {filter: {email: {eq: userData?.attributes.email}}}));
+        if("data" in result) {
+          const data = result.data as ListUserDataQuery;
+          const items = data.listUserData?.items
+          if(items) {
+            const itemDevices = items[0]?.devices;
+            if(itemDevices) {
+              const adarr: string[] = itemDevices.filter(notEmpty);
+              setDevices(adarr);
+            }
           }
         }
       }

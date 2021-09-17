@@ -10,8 +10,8 @@ Amplify.configure(awsconfig);
 
 export type UserData = {
   username: string,
-  attributes: {
-    email: string,
+  attributes?: {
+    email?: string,
   },
   signInUserSession: {
     idToken: {
