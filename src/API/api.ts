@@ -42,7 +42,7 @@ const api = {
         res = d.Items as Array<Response>;
       }
     }).catch((r) => {
-      console.log(r);
+      // console.log(r);
     });
     return res;
   }

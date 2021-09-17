@@ -23,7 +23,6 @@ const Main = (props: Props) => {
 
   useEffect(() => {
     (async () => {
-      console.log(userData);
       if(userData.attributes?.email) {
         const result = await API.graphql(graphqlOperation(listUserData, {filter: {email: {eq: userData?.attributes.email}}}));
         if("data" in result) {
