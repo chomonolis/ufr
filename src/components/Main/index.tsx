@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { API, graphqlOperation } from 'aws-amplify';
 import { CircularProgress, Container } from '@material-ui/core';
+import { listUserData }from '../../graphql/queries';
+import { ListUserDataQuery } from '../../API';
 
 import { UserData } from "../../App";
 import api, { DynamodbroPostQuery, DynamodbroPostResponse } from "../../API/api";
 import Chart from "../Chart";
 import Form, { Inputs } from "./Form";
+import { notEmpty } from "../../util";
 
 type Props = {
   userData: UserData
@@ -15,7 +19,24 @@ const Main = (props: Props) => {
   const [respose, setResponse] = useState<DynamodbroPostResponse>();
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const devices: string[] = ["UF_raspberry", "UF_raspberry2"];
+  const [devices, setDevices] = useState<string[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const result = await API.graphql(graphqlOperation(listUserData, {filter: {email: {eq: userData?.attributes.email}}}));
+      if("data" in result) {
+        const data = result.data as ListUserDataQuery;
+        const items = data.listUserData?.items
+        if(items) {
+          const itemDevices = items[0]?.devices;
+          if(itemDevices) {
+            const adarr: string[] = itemDevices.filter(notEmpty);
+            setDevices(adarr);
+          }
+        }
+      }
+    })();
+  }, [userData])
 
   const validateDate = (s: string) => {
     const year = s.substr(0, 4);

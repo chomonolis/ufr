@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "ufr",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authufr7d0307dd",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

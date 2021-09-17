@@ -9,6 +9,13 @@ export const registerMui = (res: UseFormRegisterReturn) => {
   };
 }
 
+export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  if (value === null || value === undefined) return false;
+  // eslint-disable-next-line
+  const testDummy: TValue = value;
+  return true;
+}
+
 const util = {
 
   hasProperty: <K extends string>(
@@ -19,7 +26,7 @@ const util = {
       x instanceof Object && name.every(prop => prop in x)
     );
   }
-
+  
 }
 
 export default util;
