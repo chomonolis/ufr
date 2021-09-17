@@ -25,6 +25,7 @@ yarn-error.log*
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
+amplify/team-provider-info.json
 amplify/logs
 amplify/mock-data
 amplify/backend/amplify-meta.json
