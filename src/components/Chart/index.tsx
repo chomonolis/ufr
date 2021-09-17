@@ -83,7 +83,7 @@ const makeData = (itemMap: Map<string, Data[]>, type: string) => {
       label: type,
       backgroundColor: "#008080",
       borderColor: "#7fffd4",
-      pointBorderWidth: 5,
+      pointBorderWidth: 1,
       data: data,
     }]
   };
