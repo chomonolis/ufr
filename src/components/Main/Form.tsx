@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const makeInitialTime = () => {
-  const s = new Date();
+  const s = new Date(2021, 10, 20);
   s.setHours(0);
   s.setMinutes(0);
   s.setSeconds(0);
